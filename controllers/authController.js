@@ -7,11 +7,11 @@ class authController {
         User
             .findOne({ where: { role: 'admin' } })
             .then((oneAdmin) => {
-                if (oneAdmin && role == 'admin') throw Error('You cannot change your role to admin!')
-                else return User.update({ id: req.params.id, email, password, role }, { where: { id: req.params.id }, individualHooks: true })
+                if (oneAdmin && role == 'admin') throw Error('There is already an existing admin!')
+                else return User.create({ email, password, role })
             })
-            .then((updatedUser) => {
-                res.status(201).json(updatedUser)
+            .then((createdUser) => {
+                res.status(201).json(createdUser)
             })
             .catch((err) => {
                 res.status(400).json(err.message)
